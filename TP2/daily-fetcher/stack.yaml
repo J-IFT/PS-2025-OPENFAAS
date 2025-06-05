@@ -7,6 +7,6 @@ functions:
     lang: python3-http
     handler: ./daily-fetcher
     image: daily-fetcher:latest
-    annotations:
-      topic: orders.import
-      schedule: "0 8 * * *"
+    schedule: "0 8 * * *"
+    environment:
+      gateway_url: "http://gateway.openfaas:8080/"
