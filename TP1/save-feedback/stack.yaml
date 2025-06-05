@@ -1,0 +1,13 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  save-feedback:
+    lang: python3-http
+    handler: ./save-feedback
+    image: jinfanti/save-feedback:latest
+    environment:
+      REDIS_HOST: redis-master.default.svc.cluster.local
+      REDIS_PORT: "6379"
+

@@ -9,5 +9,4 @@ functions:
     image: daily-fetcher:latest
     annotations:
       topic: orders.import
-      schedule: "0 8 * * *
-
+      schedule: "0 8 * * *"
