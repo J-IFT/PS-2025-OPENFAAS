@@ -6,5 +6,7 @@ functions:
   status-checker:
     lang: python3-http
     handler: ./status-checker
-    image: status-checker:latest
+    image: jinfanti/status-checker:latest
+    volumes:
+      - ./depot:/home/app/depot
 
