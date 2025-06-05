@@ -6,7 +6,7 @@ functions:
   daily-fetcher:
     lang: python3-http
     handler: ./daily-fetcher
-    image: daily-fetcher:latest
+    image: jinfanti/daily-fetcher:latest
     schedule: "0 8 * * *"
     environment:
       gateway_url: "http://gateway.openfaas:8080/"

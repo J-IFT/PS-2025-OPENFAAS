@@ -1,0 +1,12 @@
+version: 1.0
+provider:
+  name: openfaas
+  gateway: http://127.0.0.1:8080
+functions:
+  file-transformer:
+    lang: python3-http
+    handler: ./file-transformer
+    image: jinfanti/file-transformer:latest
+    volumes:
+      - ./data:/home/app/data
+      - ./depot:/home/app/depot
