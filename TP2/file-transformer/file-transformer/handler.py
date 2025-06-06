@@ -1,38 +1,43 @@
 import csv
 import os
-from datetime import datetime
 import json
+from datetime import datetime
 
-def capitalize_clean(s):
-    if not isinstance(s, str):
-        return s
-    return s.strip().capitalize()
-
-def handle(event):
-    input_path = "data/input.csv"
-    today = datetime.now().strftime("%Y-%m-%d")
-    output_path = f"depot/orders_{today}.csv"
-
-    if not os.path.exists(input_path):
-        return json.dumps({"error": f"Le fichier {input_path} est introuvable."})
-
-    os.makedirs("depot", exist_ok=True)
-
+def handle(event, context):
     try:
-        with open(input_path, mode='r', encoding='utf-8') as infile, \
-             open(output_path, mode='w', encoding='utf-8', newline='') as outfile:
+        data = json.loads(event.body)
+        date_from_nats = data.get("date", "")
+        print(f"Reçu : {data}")
 
-            reader = csv.DictReader(infile)
-            fieldnames = reader.fieldnames
-            writer = csv.DictWriter(outfile, fieldnames=fieldnames)
-            writer.writeheader()
+        input_path = "./data/input.csv"
+        output_path = "./depot/output.csv"
+        user_id = "US7"
+        now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
+        transformed_rows = []
+
+        # Lire le fichier CSV
+        with open(input_path, newline='', encoding='utf-8') as csvfile:
+            reader = csv.DictReader(csvfile)
             for row in reader:
-                row['product'] = capitalize_clean(row.get('product'))
-                row['customer'] = capitalize_clean(row.get('customer'))
-                writer.writerow(row)
+                transformed_row = {
+                    "order_id": row["order_id"],
+                    "product": row["product"].lower(),
+                    "quantity": row["quantity"],
+                    "customer": row["customer"].upper(),
+                    "Processed-Date": now,
+                    "process_by": user_id
+                }
+                transformed_rows.append(transformed_row)
 
-        return json.dumps({"message": f"Fichier transformé et sauvegardé dans {output_path}"})
+        # Écrire le fichier transformé
+        fieldnames = transformed_rows[0].keys()
+        with open(output_path, 'w', newline='', encoding='utf-8') as out_csv:
+            writer = csv.DictWriter(out_csv, fieldnames=fieldnames)
+            writer.writeheader()
+            writer.writerows(transformed_rows)
+
+        return f"Transformation réussie, fichier écrit dans {output_path}"
 
     except Exception as e:
-        return json.dumps({"error": "Erreur durant le traitement du fichier", "details": str(e)})
+        return f"Erreur : {str(e)}"

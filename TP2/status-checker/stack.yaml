@@ -7,6 +7,6 @@ functions:
     lang: python3-http
     handler: ./status-checker
     image: jinfanti/status-checker:latest
-    volumes:
-      - ./depot:/home/app/depot
-
+    build:
+      copy_extra:
+        - depot

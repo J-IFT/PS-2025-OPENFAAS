@@ -7,6 +7,9 @@ functions:
     lang: python3-http
     handler: ./file-transformer
     image: jinfanti/file-transformer:latest
-    volumes:
-      - ./data:/home/app/data
-      - ./depot:/home/app/depot
+    environment:
+      USER_ID: "US7"
+    build:
+      copy_extra:
+        - data
+        - depot
