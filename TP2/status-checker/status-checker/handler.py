@@ -4,7 +4,7 @@ import json
 def handle(event, context):
     try:
         # Le chemin vers le dossier "depot" (local)
-        depot_path = "./depot"
+        depot_path = "./function/depot"
         files = []
 
         if os.path.exists(depot_path):

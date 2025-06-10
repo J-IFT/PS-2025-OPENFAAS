@@ -9,8 +9,8 @@ def handle(event, context):
         date_from_nats = data.get("date", "")
         print(f"Reçu : {data}")
 
-        input_path = "./data/input.csv"
-        output_path = "./depot/output.csv"
+        input_path = "./function/data/input.csv"
+        output_path = "./function/depot/output.csv"
         user_id = "US7"
         now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
